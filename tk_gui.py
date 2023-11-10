@@ -2,8 +2,7 @@ from tkinter import Tk, Button
 from tkinter.messagebox import showinfo
 from tkinter.filedialog import askopenfilename
 
-from parser_json import Parser
-
+from json_parser import convert
 
 class Gui:
 
@@ -16,8 +15,9 @@ class Gui:
 
     def upload(self):
         file = askopenfilename(filetypes=[("Json files", ".json")])
-        Parser(file)
 
+        convert(file)
+        
         showinfo(title='Окончание операции', message='Конвертация завершена')
 
         self.master.destroy()
