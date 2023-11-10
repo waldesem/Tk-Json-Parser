@@ -164,4 +164,3 @@ cython_debug/
 .xlsx
 .json
 !anketa.xlsx
-!security-sheet v2.json
