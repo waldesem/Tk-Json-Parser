@@ -59,7 +59,9 @@ class Parser:
                     self.sheet[f'AC{index + 3}'] = value['address']
                     self.sheet[f'AD{index + 3}'] = value['position']
                     self.sheet[f'AE{index + 3}'] = value['reason']
-    
+        
+        self.wb.save(file.replace('json', 'xlsx'))
+
     def parse_fullname(self):
         try:
             lastName = self.json_dict['lastName'].strip()
@@ -115,7 +117,7 @@ class Parser:
     
     def parse_workplace(self):
         experience = []
-        if 'experience' in self.json_dict:
+        if self.json_dict['hasJob'] and 'experience' in self.json_dict:
             if len(self.json_dict['experience']):
                 for item in self.json_dict['experience']:
                     work = {

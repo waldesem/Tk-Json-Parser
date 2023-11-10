@@ -7,19 +7,16 @@ from parser_json import Parser
 
 class Gui:
 
-    def __init__(self, master, title, geometry):
+    def __init__(self, master):
         self.master = master
-        self.title = title
-        self.geometry = geometry
-        self.master.title(title)
-        self.master.geometry(geometry)
+        self.master.title('JSON Parser')
+        self.master.geometry('240x240')
         Button(master, text='Загрузить JSON', command=self.upload).\
             grid(row=0, column=0, padx=60, pady=60)
 
     def upload(self):
         file = askopenfilename(filetypes=[("Json files", ".json")])
-        data = Parser(file)
-        data.wb.save(file.replace('json', 'xlsx'))
+        Parser(file)
 
         showinfo(title='Окончание операции', message='Конвертация завершена')
 
@@ -28,5 +25,5 @@ class Gui:
 
 if __name__ == '__main__':
     root = Tk()
-    mw = Gui(root,'JSON Parser', '240x240')
+    mw = Gui(root)
     root.mainloop()

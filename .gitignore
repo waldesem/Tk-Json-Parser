@@ -160,6 +160,7 @@ cython_debug/
 #.idea/
 
 # Project
+.code-workspace
 .xlsx
 .json
 !anketa.xlsx
