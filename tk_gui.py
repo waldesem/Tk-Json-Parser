@@ -25,5 +25,5 @@ class Gui:
 
 if __name__ == '__main__':
     root = Tk()
-    mw = Gui(root)
+    Gui(root)
     root.mainloop()
