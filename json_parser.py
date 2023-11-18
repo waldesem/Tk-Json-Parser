@@ -8,12 +8,10 @@ from tkinter.filedialog import askopenfilename
 
 def upload():
     file = askopenfilename(filetypes=[("Json files", ".json")])
-
-    convert(file)
-    
-    showinfo(title='Окончание операции', message='Конвертация завершена')
-
-    root.destroy()
+    if file:
+        convert(file)
+        showinfo(title='Окончание операции', message='Конвертация завершена')
+        root.destroy()
 
 def convert(file):
     wb = openpyxl.load_workbook('anketa.xlsx', keep_vba=True)
