@@ -116,5 +116,7 @@ def convert(file):
 if __name__ == '__main__':
     root = Tk()
     root.title('JSON Parser')
+    root.resizable(False, False)
+    root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
     Button(root, text='Загрузить JSON', command=upload).pack(padx=60, pady=50)
     root.mainloop()
