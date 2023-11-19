@@ -21,7 +21,7 @@ config_path = os.path.join(sys._MEIPASS, 'config.ini') \
 
 config = configparser.ConfigParser()
 config.read(config_path)
-base_path = os.path.abspath(config.get('Settings', 'path'))
+base_path = r'' + os.path.abspath(config.get('Settings', 'path'))
 
 
 def upload():
