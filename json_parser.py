@@ -7,7 +7,10 @@ from tkinter import Tk, Button
 from tkinter.messagebox import showinfo
 from tkinter.filedialog import askopenfilename
 
-file_path = os.path.join(sys._MEIPASS, 'anketa.xlsx')
+
+file_path = os.path.join(sys._MEIPASS, 'anketa.xlsx') \
+    if getattr(sys, 'frozen', False) else 'anketa.xlsx'
+
 
 def upload():
     file = askopenfilename(filetypes=[("Json files", ".json")])
@@ -15,6 +18,7 @@ def upload():
         convert(file)
         showinfo(title='Окончание операции', message='Конвертация завершена')
         root.destroy()
+
 
 def convert(file):
     wb = openpyxl.load_workbook(file_path, keep_vba=True)
