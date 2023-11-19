@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import sys
+import configparser
 
 import openpyxl
 from tkinter import Tk, Button
@@ -9,8 +10,18 @@ from tkinter.messagebox import showinfo
 from tkinter.filedialog import askopenfilename
 
 
-file_path = os.path.join(sys._MEIPASS, 'anketa.xlsx') \
+anketa_path = os.path.join(sys._MEIPASS, 'anketa.xlsx') \
     if getattr(sys, 'frozen', False) else 'anketa.xlsx'
+
+conclusion_path = os.path.join(sys._MEIPASS, 'conclusion.xlsx') \
+    if getattr(sys, 'frozen', False) else 'conclusion.xlsx'
+
+config_path = os.path.join(sys._MEIPASS, 'config.ini') \
+    if getattr(sys, 'frozen', False) else 'config.ini'
+
+config = configparser.ConfigParser()
+config.read(config_path)
+base_path = os.path.abspath(config.get('Settings', 'path'))
 
 
 def upload():
@@ -23,8 +34,11 @@ def upload():
 
 
 def convert(file):
-    wb = openpyxl.load_workbook(file_path, keep_vba=True)
-    sheet = wb.worksheets[0]
+    wb_anketa = openpyxl.load_workbook(anketa_path, keep_vba=True)
+    anketa_sheet = wb_anketa.worksheets[0]
+
+    wb_conclusion = openpyxl.load_workbook(conclusion_path, keep_vba=True)
+    conclusion_sheet = wb_conclusion.worksheets[0]
 
     with open(file, 'r', encoding='utf-8-sig') as f:
         data = json.load(f)
@@ -32,11 +46,13 @@ def convert(file):
         for key, value in data.items():
             match key:
                 case 'positionName':
-                    sheet['C3'] = value
+                    anketa_sheet['C3'] = value
+                    conclusion_sheet['A1'] = value
                 case 'department':
-                    sheet['D3'] = value
+                    anketa_sheet['D3'] = value
+                    conclusion_sheet['A2'] = value
                 case 'statusDate':
-                    sheet['A3'] = value
+                    anketa_sheet['A3'] = value
                 case 'lastName':
                     fullname.append(value)
                 case 'firstName':
@@ -44,29 +60,36 @@ def convert(file):
                 case 'midName':
                     fullname.append(value)
                 case 'birthday':
-                    sheet['L3'] = f"{value[-2:]}.{value[5:7]}.{value[:4]}"
+                    birthday = f"{value[-2:]}.{value[5:7]}.{value[:4]}"
+                    anketa_sheet['L3'] = birthday
+                    conclusion_sheet['A4'] = birthday
                 case 'birthplace':
-                    sheet['M3'] = value
+                    anketa_sheet['M3'] = value
                 case 'citizen':
-                    sheet['T3'] = value
+                    anketa_sheet['T3'] = value
                 case 'regAddress':
-                    sheet['N3'] = value
+                    anketa_sheet['N3'] = value
                 case 'validAddress':
-                    sheet['O3'] = value
+                    anketa_sheet['O3'] = value
                 case 'contactPhone':
-                    sheet['Y3'] = value
+                    anketa_sheet['Y3'] = value
                 case 'email':
-                    sheet['Z3'] = value
+                    anketa_sheet['Z3'] = value
                 case 'inn':
-                    sheet['V3'] = value
+                    anketa_sheet['V3'] = value
+                    conclusion_sheet['A5'] = value
                 case 'snils':
-                    sheet['U3'] = value
+                    anketa_sheet['U3'] = value
                 case 'passportSerial':
-                    sheet['P3'] = value                
+                    anketa_sheet['P3'] = value
+                    conclusion_sheet['A6'] = value          
                 case 'passportNumber':
-                    sheet['Q3'] = value
+                    anketa_sheet['Q3'] = value
+                    conclusion_sheet['B6'] = value
                 case 'passportIssueDate':
-                    sheet['R3'] = f"{value[-2:]}.{value[5:7]}.{value[:4]}"
+                    issue = f"{value[-2:]}.{value[5:7]}.{value[:4]}"
+                    anketa_sheet['R3'] = issue
+                    conclusion_sheet['C6'] = issue
                 case 'nameWasChanged':
                     if isinstance(value, list):
                         previous = []
@@ -76,7 +99,7 @@ def convert(file):
                                             'lastNameBeforeChange', 
                                             'midNameBeforeChange', 'reason']]
                             previous.append(', '.join(prev))
-                        sheet['S3'] = '; '.join(previous)
+                        anketa_sheet['S3'] = '; '.join(previous)
                 case 'education':
                     if isinstance(value, list):
                         education = []
@@ -85,22 +108,23 @@ def convert(file):
                                     if k in ['endYear', 'institutionName', 
                                             'specialty']]
                             education.append(', '.join(edu))
-                        sheet['X3'] = '; '.join(education)
+                        anketa_sheet['X3'] = '; '.join(education)
                 case 'experience':
                     if isinstance(value, list):
-                        for index, item in enumerate(value):
+                        for index, item in enumerate(value[:3]):
                             for k, v in item.items():
                                 match k:
-                                    case 'workplace':
-                                        sheet[f'AB{index + 3}'] = v
+                                    case 'name':
+                                        anketa_sheet[f'AB{index + 3}'] = v
+                                        conclusion_sheet[f'B{index + 7}'] = v
                                     case 'address':
-                                        sheet[f'AC{index + 3}'] = v
+                                        anketa_sheet[f'AC{index + 3}'] = v
                                     case 'position':
-                                        sheet[f'AD{index + 3}'] = v
+                                        anketa_sheet[f'AD{index + 3}'] = v
                                     case 'fireReason':
-                                        sheet[f'AE{index + 3}'] = v
+                                        anketa_sheet[f'AE{index + 3}'] = v
                             
-                            sheet[f'AA{index + 3}'] = ((
+                            period = ((
                                 f"{item['beginDate'][-2:]}."
                                 f"{item['beginDate'][5:7]}."
                                 f"{item['beginDate'][:4]}"
@@ -110,12 +134,21 @@ def convert(file):
                                 f"{item['endDate'][:4]}"
                                 ) if 'endDate' in item else '')
                             
+                            anketa_sheet[f'AA{index + 3}'] = period
+                            conclusion_sheet[f'A{index + 7}'] = period
+
         full_name = ' '.join(fullname).rstrip()
-        sheet['K3'] = full_name
+        anketa_sheet['K3'] = full_name
+        conclusion_sheet['A3'] = full_name
 
     dir_name = make_folder(file, full_name)
-    wb.save(os.path.join(dir_name, f'Анкета {full_name}.xlsx'))
-    wb.close()
+
+    wb_anketa.save(os.path.join(dir_name, f'Анкета {full_name}.xlsx'))
+    wb_anketa.close()
+    wb_conclusion.save(os.path.join(dir_name, f'Заключение {full_name}.xlsx'))
+    wb_conclusion.close()
+    shutil.move(dir_name, os.path.join(base_path, full_name))
+    
     return full_name
 
 
@@ -124,14 +157,6 @@ def make_folder(file, full_name):
     os.mkdir(dir_name)
     shutil.copyfile(file, os.path.join(dir_name, f'{full_name}.json'))
     return dir_name
-
-
-def fill_data():
-    pass
-
-
-def move_folder():
-    pass
 
 
 if __name__ == '__main__':
