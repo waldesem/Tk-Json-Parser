@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import sys
 
 import openpyxl
@@ -15,8 +16,9 @@ file_path = os.path.join(sys._MEIPASS, 'anketa.xlsx') \
 def upload():
     file = askopenfilename(filetypes=[("Json files", ".json")])
     if file:
-        convert(file)
-        showinfo(title='Окончание операции', message='Конвертация завершена')
+        fullname = convert(file)
+        showinfo(title='Окончание операции', 
+                 message=f"Импорт анкеты {fullname} завершен")
         root.destroy()
 
 
@@ -108,9 +110,28 @@ def convert(file):
                                 f"{item['endDate'][:4]}"
                                 ) if 'endDate' in item else '')
                             
-        sheet['K3'] = ' '.join(fullname).rstrip()
+        full_name = ' '.join(fullname).rstrip()
+        sheet['K3'] = full_name
 
-    wb.save(file.replace('json', 'xlsx'))
+    dir_name = make_folder(file, full_name)
+    wb.save(os.path.join(dir_name, f'Анкета {full_name}.xlsx'))
+    wb.close()
+    return full_name
+
+
+def make_folder(file, full_name):
+    dir_name = os.path.join(os.path.dirname(file), full_name)
+    os.mkdir(dir_name)
+    shutil.copyfile(file, os.path.join(dir_name, f'{full_name}.json'))
+    return dir_name
+
+
+def fill_data():
+    pass
+
+
+def move_folder():
+    pass
 
 
 if __name__ == '__main__':

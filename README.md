@@ -14,17 +14,18 @@ Install the required dependencies:
 ```
 pip install -r requirements.txt
 ````
-For building executables with folder data: 
+For building executable with folder data: 
 ```
 pyinstaller --clean  --add-data="anketa.xlsx":. json_parser.py
 ```
-or for one file:
+or for one file (may be slow on startup executable):
 ```
 pyinstaller --clean --onefile --add-data="anketa.xlsx":. json_parser.py
 ```
 
 ## Usage
-Run the script: `python json_parser.py` or executable: `json_parser.exe` from `Json_Excel/dist/json_parser` folder
+Run the script: `python json_parser.py` 
+Or executable: `json_parser.exe` from `Json_Excel/dist/json_parser` folder
 
 ## Screenshot
 ![Screenshot](screenshot.png)
