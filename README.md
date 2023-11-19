@@ -1,12 +1,11 @@
 # Small JSON to XLSX Importer
 
-## Project Description
-This project provides a Python script for importing data from a JSON file to an XLSX format. 
+## Script Description
+This Python script is used to convert JSON data to an XLSX file.
 It uses the `openpyxl` library to create an XLSX file, the `json` library to parse the JSON data, and the `tkinter` library for the Tkinter GUI.
 Python 3.10+ is required.
 
 ## Installation
-To use this script, follow these steps:
 Clone the repository: 
 ```
 git clone https://github.com/waldesem/Json_Excel.git
@@ -15,18 +14,20 @@ Install the required dependencies:
 ```
 pip install -r requirements.txt
 ````
-For building executables: 
+For building executables with folder data: 
 ```
-pyinstaller --clean json_parser.py
+pyinstaller --clean  --add-data="anketa.xlsx":. json_parser.py
 ```
-Add file 'anketa.xlsx' to './dist/tk_gui' folder 
+or for one file:
 ```
-cp anketa.xlsx ./dist/json_parser
+pyinstaller --clean --onefile --add-data="anketa.xlsx":. json_parser.py
 ```
 
 ## Usage
-1. Run the script: `python json_parser.py`
-2. Run executables: `./dist/json_parser`
+Run the script: `python json_parser.py` or executable: `json_parser.exe` from `Json_Excel/dist/json_parser` folder
+
+## Screenshot
+![Screenshot](screenshot.png)
 
 ## License
 This project is licensed under the MIT License.

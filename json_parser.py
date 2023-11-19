@@ -1,10 +1,13 @@
 import json
+import os
+import sys
 
 import openpyxl
 from tkinter import Tk, Button
 from tkinter.messagebox import showinfo
 from tkinter.filedialog import askopenfilename
 
+file_path = os.path.join(sys._MEIPASS, 'anketa.xlsx')
 
 def upload():
     file = askopenfilename(filetypes=[("Json files", ".json")])
@@ -14,7 +17,7 @@ def upload():
         root.destroy()
 
 def convert(file):
-    wb = openpyxl.load_workbook('anketa.xlsx', keep_vba=True)
+    wb = openpyxl.load_workbook(file_path, keep_vba=True)
     sheet = wb.worksheets[0]
 
     with open(file, 'r', encoding='utf-8-sig') as f:
