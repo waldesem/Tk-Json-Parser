@@ -20,7 +20,7 @@ pyinstaller --clean  --add-data="anketa.xlsx":. json_parser.py
 ```
 or for one file (may be slow on startup executable):
 ```
-pyinstaller --clean --add-data="anketa.xlsx":. --add-data="conclusion.xlsx":. --add-data="settings.ini":. json_parser.py
+pyinstaller --clean --add-data="anketa.xlsx":. --add-data="conclusion.xlsm":. --add-data="config.ini":. json_parser.py
 ```
 
 ## Usage
