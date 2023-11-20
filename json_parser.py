@@ -13,8 +13,8 @@ from tkinter.filedialog import askopenfilename
 anketa_path = os.path.join(sys._MEIPASS, 'anketa.xlsx') \
     if getattr(sys, 'frozen', False) else 'anketa.xlsx'
 
-conclusion_path = os.path.join(sys._MEIPASS, 'conclusion.xlsx') \
-    if getattr(sys, 'frozen', False) else 'conclusion.xlsx'
+conclusion_path = os.path.join(sys._MEIPASS, 'conclusion.xlsm') \
+    if getattr(sys, 'frozen', False) else 'conclusion.xlsm'
 
 config_path = os.path.join(sys._MEIPASS, 'config.ini') \
     if getattr(sys, 'frozen', False) else 'config.ini'
@@ -47,10 +47,10 @@ def convert(file):
             match key:
                 case 'positionName':
                     anketa_sheet['C3'] = value
-                    conclusion_sheet['A1'] = value
+                    conclusion_sheet['C4'] = value
                 case 'department':
                     anketa_sheet['D3'] = value
-                    conclusion_sheet['A2'] = value
+                    conclusion_sheet['C5'] = value
                 case 'statusDate':
                     anketa_sheet['A3'] = value
                 case 'lastName':
@@ -62,7 +62,7 @@ def convert(file):
                 case 'birthday':
                     birthday = f"{value[-2:]}.{value[5:7]}.{value[:4]}"
                     anketa_sheet['L3'] = birthday
-                    conclusion_sheet['A4'] = birthday
+                    conclusion_sheet['C8'] = birthday
                 case 'birthplace':
                     anketa_sheet['M3'] = value
                 case 'citizen':
@@ -77,19 +77,19 @@ def convert(file):
                     anketa_sheet['Z3'] = value
                 case 'inn':
                     anketa_sheet['V3'] = value
-                    conclusion_sheet['A5'] = value
+                    conclusion_sheet['C10'] = value
                 case 'snils':
                     anketa_sheet['U3'] = value
                 case 'passportSerial':
                     anketa_sheet['P3'] = value
-                    conclusion_sheet['A6'] = value          
+                    conclusion_sheet['C9'] = value          
                 case 'passportNumber':
                     anketa_sheet['Q3'] = value
-                    conclusion_sheet['B6'] = value
+                    conclusion_sheet['D9'] = value
                 case 'passportIssueDate':
                     issue = f"{value[-2:]}.{value[5:7]}.{value[:4]}"
                     anketa_sheet['R3'] = issue
-                    conclusion_sheet['C6'] = issue
+                    conclusion_sheet['E9'] = issue
                 case 'nameWasChanged':
                     if isinstance(value, list):
                         previous = []
@@ -100,6 +100,7 @@ def convert(file):
                                             'midNameBeforeChange', 'reason']]
                             previous.append(', '.join(prev))
                         anketa_sheet['S3'] = '; '.join(previous)
+                        conclusion_sheet['C7'] = '; '.join(previous)
                 case 'education':
                     if isinstance(value, list):
                         education = []
@@ -116,7 +117,7 @@ def convert(file):
                                 match k:
                                     case 'name':
                                         anketa_sheet[f'AB{index + 3}'] = v
-                                        conclusion_sheet[f'B{index + 7}'] = v
+                                        conclusion_sheet[f'D{index + 11}'] = v
                                     case 'address':
                                         anketa_sheet[f'AC{index + 3}'] = v
                                     case 'position':
@@ -135,17 +136,17 @@ def convert(file):
                                 ) if 'endDate' in item else '')
                             
                             anketa_sheet[f'AA{index + 3}'] = period
-                            conclusion_sheet[f'A{index + 7}'] = period
+                            conclusion_sheet[f'C{index + 11}'] = period
 
         full_name = ' '.join(fullname).rstrip()
         anketa_sheet['K3'] = full_name
-        conclusion_sheet['A3'] = full_name
+        conclusion_sheet['C6'] = full_name
 
     dir_name = make_folder(file, full_name)
 
     wb_anketa.save(os.path.join(dir_name, f'Анкета {full_name}.xlsx'))
     wb_anketa.close()
-    wb_conclusion.save(os.path.join(dir_name, f'Заключение {full_name}.xlsx'))
+    wb_conclusion.save(os.path.join(dir_name, f'Заключение {full_name}.xlsm'))
     wb_conclusion.close()
     shutil.move(dir_name, os.path.join(base_path, full_name))
     
