@@ -16,16 +16,12 @@ pip install -r requirements.txt
 ````
 For building executable with folder data: 
 ```
-pyinstaller --clean  --add-data="anketa.xlsx":. json_parser.py
-```
-or for one file (may be slow on startup executable):
-```
-pyinstaller --clean --add-data="anketa.xlsx":. --add-data="conclusion.xlsm":. --add-data="config.ini":. json_parser.py
+pyinstaller --clean --noconsole --add-data="anketa.xlsx":. --add-data="conclusion.xlsm":. --add-data="config.ini":. json_parser.py
 ```
 
 ## Usage
 To configure the output folder change path in `config.ini`
-Run the script: `python json_parser.py` 
+For start using the script: `python json_parser.py` 
 Or executable: `json_parser.exe` from `Json_Excel/dist/json_parser` folder
 
 ## Screenshot
