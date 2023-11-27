@@ -34,7 +34,7 @@ def upload():
 
 
 def convert(file):
-    wb_anketa = openpyxl.load_workbook(anketa_path, keep_vba=True)
+    wb_anketa = openpyxl.load_workbook(anketa_path)
     anketa_sheet = wb_anketa.worksheets[0]
 
     wb_conclusion = openpyxl.load_workbook(conclusion_path, keep_vba=True)
@@ -155,9 +155,10 @@ def convert(file):
 
 def make_folder(file, full_name):
     dir_name = os.path.join(os.path.dirname(file), full_name)
-    os.mkdir(dir_name)
-    shutil.copyfile(file, os.path.join(dir_name, f'{full_name}.json'))
-    return dir_name
+    if not os.path.isdir(dir_name):
+        os.mkdir(dir_name)
+        shutil.copyfile(file, os.path.join(dir_name, f'{full_name}.json'))
+        return dir_name
 
 
 if __name__ == '__main__':
