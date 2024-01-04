@@ -163,5 +163,5 @@ cython_debug/
 .vscode
 .code-workspace
 .xlsx
+.xlsm
 .json
-!anketa.xlsx
