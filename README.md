@@ -21,8 +21,6 @@ pyinstaller --clean --noconsole --add-data="anketa.xlsx":. --add-data="conclusio
 
 ## Usage
 To configure the output folder change path in `config.ini`
-For start using the script: `python json_parser.py` 
-Or executable: `json_parser.exe` from `Json_Excel/dist/json_parser` folder
 
 ## Screenshot
 ![Screenshot](screenshot.png)
