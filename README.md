@@ -16,7 +16,7 @@ pip install -r requirements.txt
 ````
 For building executable with folder data: 
 ```
-pyinstaller --clean --noconsole --add-data="anketa.xlsx":. --add-data="conclusion.xlsm":. --add-data="config.ini":. json_parser.py
+pyinstaller --clean --noconsole --add-data="anketa.xlsx":. json_parser.py
 ```
 
 ## Usage
