@@ -5,7 +5,6 @@ import sys
 
 import openpyxl
 from tkinter import Tk, Button
-from tkinter.messagebox import showinfo
 from tkinter.filedialog import askopenfilename
 
 
@@ -15,9 +14,7 @@ anketa_path = os.path.join(sys._MEIPASS, 'anketa.xlsx') \
 def upload():
     file = askopenfilename(filetypes=[("Json files", ".json")])
     if file:
-        fullname = convert(file)
-        showinfo(title='Окончание операции', 
-                 message=f"Импорт анкеты {fullname} завершен")
+        convert(file)
         root.destroy()
 
 
